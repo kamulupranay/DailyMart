@@ -1,0 +1,67 @@
+<mat-toolbar color="primary">
+  <div class="daily-mart">
+    <span matIconbutton>
+      <mat-icon>shopping_bag</mat-icon>
+    </span>
+    Daily Mart
+  </div>
+
+  <nav class="desktop-menu">
+    <button
+      routerLink="home"
+      routerLinkActive="active"
+      matButton
+      class="example-button"
+      aria-label="Example icon-button with heart icon"
+    >
+      Home
+    </button>
+    <button
+      routerLink="shopping"
+      routerLinkActive="active"
+      matButton
+      class="example-button"
+      aria-label="Example icon-button with share icon"
+    >
+      Shopping
+    </button>
+    <button
+      routerLink="groceries"
+      routerLinkActive="active"
+      matButton
+      class="example-button"
+      aria-label="Example icon-button with share icon"
+    >
+      Groceries
+    </button>
+  </nav>
+  <!-- Mobile Menu Icon -->
+  <button mat-icon-button (click)="toggleMenu()" class="mobile-menu">
+    <mat-icon>{{ isMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+  </button>
+
+  <button
+    class="example-button"
+    mat-icon-button
+    [matBadge]="cartCount()"
+    [matBadgeHidden]="cartCount() === 0"
+    matBadgeColor="warn"
+    routerLink="/cart"
+    (click)="isMenuOpen.set(false)"
+  >
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+</mat-toolbar>
+<!-- Mobile Dropdown -->
+@if (isMenuOpen() || isClosing()) {
+  <div
+    class="mobile-dropdown"
+    [class.slide-down]="isMenuOpen()"
+    [class.slide-up]="isClosing()"
+    (click)="isMenuOpen.set(false)"
+  >
+    <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/shopping">Shopping</button>
+    <button mat-button routerLink="/groceries">Groceries</button>
+  </div>
+}

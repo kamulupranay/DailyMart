@@ -1,0 +1,83 @@
+<!-- <section class="dashboard">
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile>
+      <div class="card-content">
+        <mat-card routerLink="/groceries" class="glass-card" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title> Groceries</mat-card-title>
+            <mat-card-subtitle>Herding group</mat-card-subtitle>
+          </mat-card-header>
+
+          <span matIconbutton>
+            <mat-icon>shopping_cart</mat-icon>
+          </span>
+          <mat-card-content>
+            <p>
+              Essential grocery content includes fresh produce (fruits, vegetables), dairy/eggs,
+              proteins (meat, seafood, plant-based alternatives), and pantry staples (grains, pasta,
+              sauces)
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card routerLink="/shopping" class="glass-card" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Poodle</mat-card-title>
+            <mat-card-subtitle>Non-sporting group</mat-card-subtitle>
+          </mat-card-header>
+          <span matIconbutton>
+            <mat-icon>shopping_bag</mat-icon>
+          </span>
+          <mat-card-content>
+            <p>
+              Shoppable content is interactive digital media—including social media posts, videos,
+              and images—that allows consumers to click and purchase products directly, reducing
+              steps to checkout
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</section> -->
+
+<!-- //////////// -->
+ <section class="dashboard">
+  <div class="card-grid">
+
+    <!-- Card 1 -->
+    <mat-card class="modern-card">
+        <div class="modern-card-content">
+        <img src="images/grocery.jpg" class="card-img" />
+      <div class="card-header">
+        <mat-icon>shopping_cart</mat-icon>
+        <h3>Groceries</h3>
+      </div>
+
+      <p>
+        Fresh produce, dairy, proteins, and all your daily essentials delivered fast.
+      </p>
+
+      <button matButton="outlined" color="primary" routerLink="/groceries">Shop Now</button>
+      </div>
+    </mat-card>
+
+    <!-- Card 2 -->
+    <mat-card class="modern-card">
+        <div class="modern-card-content">
+        <img src="images/shopping.jpg" class="card-img" />
+      <div class="card-header">
+        <mat-icon>shopping_bag</mat-icon>
+        <h3>Shopping</h3>
+      </div>
+
+      <p>
+        Discover trending products and shop directly with fewer steps.
+      </p>
+
+      <button matButton="outlined" color="primary" routerLink="/shopping">Shop Now</button>
+      </div>
+    </mat-card>
+
+  </div>
+</section>
