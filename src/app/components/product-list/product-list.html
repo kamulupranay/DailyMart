@@ -1,0 +1,31 @@
+<!-- Add Content Here -->
+@if ((productList()?.length ?? 0) === 0) {
+  <div class="loading">
+  <div class="loader"></div>
+  </div>
+}@else {
+<div class="product-grid">
+    @for (product of productList(); track product.id) {
+
+    <mat-card class="product-card" appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>{{product.title}}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]="product.image" alt="{{ product.title }}" />
+        <mat-card-content>
+            <p class="category">{{ product.category }}</p>
+            <p class="price">{{ product.price | currency: 'USD': true}}</p>
+
+    @if (getQtys(product) === 0) {
+      <button matButton="outlined" (click)="addToCart(product)">Add to Cart</button>
+    } @else {
+      <button matButton="outlined" (click)="decrease(product)">-</button>
+      <span class="product-count">{{ getQtys(product) }}</span>
+      <button matButton="outlined" (click)="increase(product)">+</button>
+    }
+
+  </mat-card-content>
+  </mat-card>
+}
+</div>
+}
