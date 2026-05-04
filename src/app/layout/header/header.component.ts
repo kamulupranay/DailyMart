@@ -45,8 +45,6 @@ export class HeaderComponent {
   );
 
   toggleMenu(){
-    // event?.stopPropagation();
-    // this.isMenuOpen.set(!this.isMenuOpen());
     if (this.isMenuOpen()) {
       this.isClosing.set(true);
 
