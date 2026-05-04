@@ -1,0 +1,150 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Header -->
+    <div class="login-header">
+      <h1 class="login-title">Welcome Back</h1>
+      <p class="login-subtitle">Sign in to your account</p>
+    </div>
+
+    <!-- Alert Messages -->
+    @if (successMessage()) {
+      <div class="alert alert-success" role="alert">
+        <span class="alert-icon">✓</span>
+        <span class="alert-text">{{ successMessage() }}</span>
+      </div>
+    }
+
+    @if (errorMessage()) {
+      <div class="alert alert-error" role="alert">
+        <span class="alert-icon">✕</span>
+        <span class="alert-text">{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <div class="input-wrapper">
+          <span class="input-icon">👤</span>
+          <input
+            id="username"
+            type="text"
+            class="form-input"
+            formControlName="username"
+            placeholder="Enter your username"
+            aria-label="Username"
+            [class.input-error]="
+              loginForm.get('username')?.invalid &&
+              loginForm.get('username')?.touched
+            "
+            autocomplete="username"
+          />
+        </div>
+        @if (
+          loginForm.get('username')?.invalid &&
+          loginForm.get('username')?.touched
+        ) {
+          <p class="error-text" role="alert">
+            @if (loginForm.get('username')?.errors?.['required']) {
+              Username is required
+            } @else if (loginForm.get('username')?.errors?.['minlength']) {
+              Username must be at least 3 characters
+            }
+          </p>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-wrapper password-wrapper">
+          <span class="input-icon">🔒</span>
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            class="form-input"
+            formControlName="password"
+            placeholder="Enter your password"
+            aria-label="Password"
+            [class.input-error]="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="
+              showPassword() ? 'Hide password' : 'Show password'
+            "
+          >
+            {{ showPassword() ? '👁️' : '👁️‍🗨️' }}
+          </button>
+        </div>
+        @if (
+          loginForm.get('password')?.invalid &&
+          loginForm.get('password')?.touched
+        ) {
+          <p class="error-text" role="alert">
+            @if (loginForm.get('password')?.errors?.['required']) {
+              Password is required
+            } @else if (loginForm.get('password')?.errors?.['minlength']) {
+              Password must be at least 6 characters
+            }
+          </p>
+        }
+      </div>
+
+      <!-- Remember Me & Forgot Password -->
+      <div class="form-footer">
+        <label class="checkbox-label">
+          <input type="checkbox" class="checkbox-input" />
+          <span>Remember me</span>
+        </label>
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="login-button"
+        [disabled]="isLoading()"
+        [attr.aria-busy]="isLoading()"
+      >
+        @if (isLoading()) {
+          <span class="loader"></span>
+          Signing in...
+        } @else {
+          Sign In
+        }
+      </button>
+
+      <!-- Reset Button -->
+      <button
+        type="button"
+        class="reset-button"
+        (click)="resetForm()"
+        [disabled]="isLoading()"
+      >
+        Clear
+      </button>
+    </form>
+
+    <!-- Sign Up Link -->
+    <div class="login-footer">
+      <p>
+        Don't have an account?
+        <a routerLink="/signup" class="signup-link">Sign up here</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Decorative Elements -->
+  <div class="decoration decoration-circle-1"></div>
+  <div class="decoration decoration-circle-2"></div>
+</div>
+

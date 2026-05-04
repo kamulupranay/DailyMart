@@ -1,6 +1,4 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { ProductModel } from '../models/product.model';
-import { GroceriesModel } from '../models/grocery.model';
 import { BaseItem } from '../models/base.model';
 
 @Injectable({

@@ -1,9 +1,9 @@
-<mat-toolbar color="primary">
-  <div class="daily-mart">
-    <span matIconbutton>
+<mat-toolbar color="primary" class="header-toolbar">
+  <div class="brand-section">
+    <span class="brand-icon">
       <mat-icon>shopping_bag</mat-icon>
     </span>
-    Daily Mart
+    <span class="brand-text">Daily Mart</span>
   </div>
 
   <nav class="desktop-menu">
@@ -11,8 +11,8 @@
       routerLink="home"
       routerLinkActive="active"
       matButton
-      class="example-button"
-      aria-label="Example icon-button with heart icon"
+      class="navlist"
+      aria-label="Go to Home"
     >
       Home
     </button>
@@ -20,8 +20,8 @@
       routerLink="shopping"
       routerLinkActive="active"
       matButton
-      class="example-button"
-      aria-label="Example icon-button with share icon"
+      class="navlist"
+      aria-label="Go to Shopping"
     >
       Shopping
     </button>
@@ -29,28 +29,57 @@
       routerLink="groceries"
       routerLinkActive="active"
       matButton
-      class="example-button"
-      aria-label="Example icon-button with share icon"
+      class="navlist"
+      aria-label="Go to Groceries"
     >
       Groceries
     </button>
   </nav>
-  <!-- Mobile Menu Icon -->
-  <button mat-icon-button (click)="toggleMenu()" class="mobile-menu">
-    <mat-icon>{{ isMenuOpen() ? 'close' : 'menu' }}</mat-icon>
-  </button>
 
-  <button
-    class="example-button"
-    mat-icon-button
-    [matBadge]="cartCount()"
-    [matBadgeHidden]="cartCount() === 0"
-    matBadgeColor="warn"
-    routerLink="/cart"
-    (click)="isMenuOpen.set(false)"
-  >
-    <mat-icon>shopping_cart</mat-icon>
-  </button>
+  <div class="spacer"></div>
+
+  <div class="actions-section">
+    <button mat-icon-button (click)="toggleMenu()" class="mobile-menu">
+      <mat-icon>{{ isMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+    </button>
+
+    <button
+      class="icon-button"
+      mat-icon-button
+      [matBadge]="cartCount()"
+      [matBadgeHidden]="cartCount() === 0"
+      matBadgeColor="warn"
+      routerLink="/cart"
+      (click)="isMenuOpen.set(false)"
+      aria-label="View cart"
+    >
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+
+    @if (isAuthenticated()) {
+      <div class="user-section">
+        <mat-icon>account_circle</mat-icon>
+        <span class="username">{{ currentUser()?.username || 'User' }}</span>
+      </div>
+      <button
+        class="icon-button logout-btn"
+        mat-icon-button
+        aria-label="Logout"
+        (click)="logout()"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+    } @else {
+      <button
+        class="icon-button login-btn"
+        mat-icon-button
+        routerLink="/login"
+        aria-label="Login"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    }
+  </div>
 </mat-toolbar>
 <!-- Mobile Dropdown -->
 @if (isMenuOpen() || isClosing()) {
