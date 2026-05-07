@@ -19,6 +19,12 @@ html {
   );
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
@@ -36,6 +42,12 @@ body {
   // Reset the user agent margin.
   margin: 0;
   height: 100%;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 /* You can add global styles to this file, and also import other style files */
 button:hover {
@@ -65,4 +77,26 @@ button:hover {
   60% {background-size: 20% 50% ,20% 100%,20% 20% }
   80% {background-size: 20% 50% ,20% 50% ,20% 100%}
   100%{background-size: 20% 50% ,20% 50% ,20% 50% }
+}
+
+.success-snackbar {
+  --mdc-snackbar-container-color: #0f7a3a;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #fff4b8;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(15, 122, 58, 0.28);
+}
+
+.success-snackbar .mdc-snackbar__surface {
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.success-snackbar .mat-mdc-snack-bar-label {
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.success-snackbar .mat-mdc-snack-bar-action {
+  font-weight: 700;
 }

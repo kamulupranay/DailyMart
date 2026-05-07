@@ -98,6 +98,16 @@
   margin-right: 0.5rem;
 }
 
+.user-menu-trigger {
+  border-radius: 10px;
+  padding: 0 0.6rem;
+  text-transform: none;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
 .username {
   font-size: 0.9rem;
 }
@@ -114,6 +124,12 @@
   display: none;
 }
 
+:ng-deep .header-toolbar .mat-menu {
+  min-width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 /* Mobile styles */
 @media (max-width: 767px) {
   .header-toolbar {
@@ -127,7 +143,7 @@
   }
 
   .mobile-menu {
-    display: flex !important;
+    display: inline-flex;
   }
 
   .brand-text {
@@ -149,8 +165,9 @@
     background-color: #548a5f;
     padding: 10px;
     position: absolute;
-    top: 100%;
+    top: 60px;
     left: 0;
+    right: 0;
     width: 100%;
     z-index: 1000;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -160,6 +177,10 @@
       text-align: left;
       padding: 10px 15px;
     }
+  }
+
+  .username {
+    display: none;
   }
 
   .slide-down {

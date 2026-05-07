@@ -32,9 +32,12 @@ export class Signup implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.getCurrentUser()) {
-      this.router.navigate(['/login']);
-    }
+    this.authService.checkSession().subscribe((response) => {
+      console.log('Session check response:', response);
+      if (response.user) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   passwordMatchValidator(group: FormGroup) {

@@ -1,11 +1,13 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { BaseItem } from '../models/base.model';
 
+export type CartItem = BaseItem & { qty: number };
+
 @Injectable({
   providedIn: 'root',
 })
 export class Cart {
-  private cart = signal<(BaseItem & { qty: number })[]>([]);
+  private cart = signal<CartItem[]>([]);
 
   getCart(){
     return this.cart;
@@ -52,6 +54,10 @@ export class Cart {
   }
 
   // 🔍 Get Qty
+  removeItem(id: number) {
+    this.cart.set(this.cart().filter(item => item.id !== id));
+  }
+
   getQty(product: BaseItem) {
     const item = this.cart().find(p => p.id === product.id);
     
@@ -63,5 +69,15 @@ export class Cart {
   cartCount = computed(() =>
     this.cart().reduce((sum, item) => sum + item.qty, 0)
   );
+
+  subtotal = computed(() =>
+    this.cart().reduce((sum, item) => sum + item.price * item.qty, 0)
+  );
+
+  deliveryFee = computed(() => (this.cart().length > 0 ? 4.99 : 0));
+
+  tax = computed(() => this.subtotal() * 0.05);
+
+  total = computed(() => this.subtotal() + this.deliveryFee() + this.tax());
 
 }

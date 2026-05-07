@@ -1,6 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Product {
   _id: string;
@@ -52,7 +53,7 @@ export interface Order {
 })
 export class ProductService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:4000';
+  private readonly apiUrl = environment.apiUrl;
 
   getProducts(filters?: {
     category?: string;
@@ -92,7 +93,7 @@ export class ProductService {
 })
 export class CartService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:4000';
+  private readonly apiUrl = environment.apiUrl;
   readonly cartCount = signal(0);
 
   getCart(): Observable<Cart> {
@@ -125,7 +126,7 @@ export class CartService {
 })
 export class OrderService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:4000';
+  private readonly apiUrl = environment.apiUrl;
 
   createOrder(shippingAddress: any): Observable<Order> {
     return this.http.post<Order>(

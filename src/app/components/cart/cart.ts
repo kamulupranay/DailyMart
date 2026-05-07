@@ -20,6 +20,11 @@ import { BaseItem } from '../../models/base.model';
 export class CartComponent {
   private cartService = inject(Cart);
   cartItems = this.cartService.getCart();
+  subtotal = this.cartService.subtotal;
+  deliveryFee = this.cartService.deliveryFee;
+  tax = this.cartService.tax;
+  total = this.cartService.total;
+
   increaseQty(item: BaseItem) {
   this.cartService.increase(item);
 }
@@ -33,6 +38,6 @@ decreaseQty(item: BaseItem) {
 }
 
 removeItem(id: number) {
-  this.cartItems.set(this.cartItems().filter(item => item.id !== id));
+  this.cartService.removeItem(id);
 }
 }

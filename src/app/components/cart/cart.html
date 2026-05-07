@@ -142,38 +142,71 @@
       </g>
     </svg>
     <h2>Your cart is empty! Please add items</h2>
-    <button matButton="outlined" routerLink="../">Go to Shopping</button>
+    <button matButton="outlined" routerLink="/shopping">Go to Shopping</button>
   </div>
 } @else {
-  <h2 class="cart-items">Cart items</h2>
-  <div class="product-grid">
-    @for (item of cartItems(); track item.id) {
-      <mat-card class="product-card" appearance="outlined">
+  <section class="cart-page">
+    <div class="cart-heading">
+      <div>
+        <h2>Cart items</h2>
+        <p>{{ cartItems().length }} item types, {{ total() | currency: 'USD' : true }} total</p>
+      </div>
+      <button matButton="filled" routerLink="/checkout">Checkout</button>
+    </div>
+
+    <div class="cart-layout">
+      <div class="product-grid">
+        @for (item of cartItems(); track item.id) {
+          <mat-card class="product-card" appearance="outlined">
+            <mat-card-header>
+              <mat-card-title>{{ item.title }}</mat-card-title>
+            </mat-card-header>
+            <img mat-card-image [src]="item.image" alt="{{ item.title }}" />
+            <mat-card-content>
+              <p class="category">{{ item.category }}</p>
+              <p class="price">{{ item.price | currency: 'USD' : true }}</p>
+              <p class="line-total">
+                Item total: {{ item.price * item.qty | currency: 'USD' : true }}
+              </p>
+
+              <div class="qty-controls" aria-label="Quantity controls">
+                <button matButton="outlined" (click)="decreaseQty(item)">-</button>
+                <span class="qty-count">{{ getQtys(item) }}</span>
+                <button matButton="outlined" (click)="increaseQty(item)">+</button>
+              </div>
+
+              <button matButton="outlined" class="remove-btn" (click)="removeItem(item.id)">
+                Remove
+              </button>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+      <mat-card class="order-summary" appearance="outlined">
         <mat-card-header>
-          <mat-card-title>{{ item.title }}</mat-card-title>
+          <mat-card-title>Order summary</mat-card-title>
         </mat-card-header>
-        <img mat-card-image [src]="item.image" alt="{{ item.title }}" />
         <mat-card-content>
-          <p class="category">{{ item.category }}</p>
-          <p class="price">{{ item.price | currency: 'USD' : true }}</p>
-                  <!-- Quantity Controls -->
-        <div class="qty-controls">
-          <button matButton="outlined" (click)="decreaseQty(item)">-</button>
-          <button matButton="outlined">
-            <span>{{ getQtys(item) }}</span>
-          </button>
-          
-          <button matButton="outlined" (click)="increaseQty(item)">+</button>
-        </div>
-
-        <!-- Remove -->
-        <button matButton="outlined" (click)="removeItem(item.id)">
-          Remove
-        </button>
-
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <strong>{{ subtotal() | currency: 'USD' : true }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Delivery</span>
+            <strong>{{ deliveryFee() | currency: 'USD' : true }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Tax</span>
+            <strong>{{ tax() | currency: 'USD' : true }}</strong>
+          </div>
+          <div class="summary-row total-row">
+            <span>Total</span>
+            <strong>{{ total() | currency: 'USD' : true }}</strong>
+          </div>
+          <button matButton="filled" routerLink="/checkout">Proceed to Checkout</button>
         </mat-card-content>
       </mat-card>
-    }
-  </div>
-
+    </div>
+  </section>
 }

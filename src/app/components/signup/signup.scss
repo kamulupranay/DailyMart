@@ -74,6 +74,21 @@
   padding-right: 80px;
 }
 
+@media (max-width: 480px) {
+  .signup-container {
+    align-items: center;
+    padding: 16px;
+  }
+
+  .signup-card {
+    padding: 28px 20px;
+  }
+
+  .signup-card h2 {
+    font-size: 24px;
+  }
+}
+
 .toggle-password {
   position: absolute;
   right: 10px;

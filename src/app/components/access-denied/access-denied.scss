@@ -1,0 +1,36 @@
+.access-denied {
+  min-height: calc(100vh - 70px);
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: #f6faf7;
+}
+
+.access-denied__panel {
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid #d8e6dc;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(20, 102, 51, 0.12);
+}
+
+.access-denied__icon {
+  width: 56px;
+  height: 56px;
+  font-size: 56px;
+  color: #146633;
+}
+
+h1 {
+  margin: 1rem 0 0.5rem;
+  color: #173d24;
+  font-size: 2rem;
+}
+
+p {
+  margin: 0 0 1.5rem;
+  color: #4d6656;
+}

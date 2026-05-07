@@ -6,10 +6,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router, RouterLinkWithHref, RouterLinkActive } from '@angular/router';
+import { TitleCasePipe } from '@angular/common';
 import { Cart } from '../../services/cart';
 import { AuthService } from '../../services/auth.service';
 
@@ -24,8 +26,10 @@ import { AuthService } from '../../services/auth.service';
     MatListModule,
     MatIconModule,
     MatBadgeModule,
+    MatMenuModule,
     RouterLinkWithHref,
-    RouterLinkActive
+    RouterLinkActive,
+    TitleCasePipe
 ],
 })
 export class HeaderComponent {
@@ -74,5 +78,9 @@ export class HeaderComponent {
         this.router.navigate(['/login']);
       },
     });
+  }
+
+  canShop() {
+    return this.authService.hasAnyRole(['customer']);
   }
 }

@@ -1,6 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of, tap, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+export type UserRole = 'admin' | 'customer';
 
 export interface AuthResponse {
   message: string;
@@ -12,6 +15,7 @@ export interface User {
   username: string;
   name: string;
   email: string;
+  role: UserRole;
 }
 
 @Injectable({
@@ -19,7 +23,7 @@ export interface User {
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:4000';
+  private readonly apiUrl = environment.apiUrl;
   readonly isAuthenticated = signal(false);
   readonly currentUser = signal<User | null>(null);
 
@@ -96,6 +100,15 @@ export class AuthService {
 
   getCurrentUser() {
     return this.currentUser();
+  }
+
+  hasRole(role: UserRole) {
+    return this.currentUser()?.role === role;
+  }
+
+  hasAnyRole(roles: UserRole[]) {
+    const currentRole = this.currentUser()?.role;
+    return Boolean(currentRole && roles.includes(currentRole));
   }
 
   private handleError(error: HttpErrorResponse) {

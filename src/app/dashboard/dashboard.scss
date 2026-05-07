@@ -3,13 +3,35 @@
   padding: 20px;
   background: #f5f7fa;
 }
+
+.welcome-message {
+  max-width: 960px;
+  margin: 0 auto 20px;
+  padding: 18px 20px;
+  border-left: 4px solid #ff6f00;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-message p {
+  margin: 0 0 6px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.welcome-message span {
+  display: block;
+  color: #555;
+  font-size: 15px;
+}
 // .modern-card-content{
 //   display: inline;
 // }
 /* Responsive Grid */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 300px));
   gap: 20px;
   justify-content: center;
 }
@@ -84,6 +106,14 @@
   }
   .dashboard {
     padding: 12px;
+  }
+
+  .welcome-message {
+    padding: 14px 16px;
+  }
+
+  .welcome-message p {
+    font-size: 20px;
   }
 
   .modern-card {

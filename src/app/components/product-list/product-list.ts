@@ -40,12 +40,12 @@ export class ProductList {
   // ➕ Add
   addToCart(product: ProductModel) {
     this.cartService.addToCart(product);
-    this.snackBar.open('Item added successfully!', '✖', {
-    duration: 3000, // 3 seconds
-    horizontalPosition: 'right',
-    verticalPosition: 'top',
-    panelClass: ['success-snackbar']
-  });
+    this.snackBar.open('Item added successfully', 'Close', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar'],
+    });
   }
 
   // ➕ Increase

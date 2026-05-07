@@ -1,0 +1,125 @@
+@if (cartItems().length === 0) {
+  <section class="checkout-empty">
+    <mat-icon>shopping_cart</mat-icon>
+    <h2>Your cart is empty</h2>
+    <p>Add items before starting checkout.</p>
+    <button matButton="filled" routerLink="/shopping">Continue Shopping</button>
+  </section>
+} @else {
+  <section class="checkout-page">
+    <div class="checkout-header">
+      <div>
+        <p>Secure checkout</p>
+        <h1>Complete your order</h1>
+      </div>
+      <button matButton="outlined" routerLink="/cart">Back to cart</button>
+    </div>
+
+    <div class="checkout-layout">
+      <div class="checkout-form">
+        <mat-card appearance="outlined" class="checkout-card">
+          <mat-card-header>
+            <mat-card-title>Contact details</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="form-grid">
+              <label>
+                Full name
+                <input type="text" placeholder="Enter your name" />
+              </label>
+              <label>
+                Phone number
+                <input type="tel" placeholder="Enter phone number" />
+              </label>
+              <label class="full-width">
+                Email address
+                <input type="email" placeholder="Enter email address" />
+              </label>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined" class="checkout-card">
+          <mat-card-header>
+            <mat-card-title>Delivery address</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="form-grid">
+              <label class="full-width">
+                Address
+                <input type="text" placeholder="House number, street, area" />
+              </label>
+              <label>
+                City
+                <input type="text" placeholder="City" />
+              </label>
+              <label>
+                ZIP code
+                <input type="text" placeholder="ZIP code" />
+              </label>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined" class="checkout-card">
+          <mat-card-header>
+            <mat-card-title>Payment</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="payment-options">
+              <label>
+                <input type="radio" name="payment" checked />
+                Cash on delivery
+              </label>
+              <label>
+                <input type="radio" name="payment" />
+                Card payment
+              </label>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <mat-card appearance="outlined" class="summary-card">
+        <mat-card-header>
+          <mat-card-title>Order summary</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="summary-items">
+            @for (item of cartItems(); track item.id) {
+              <div class="summary-item">
+                <img [src]="item.image" alt="{{ item.title }}" />
+                <div>
+                  <strong>{{ item.title }}</strong>
+                  <span>Qty {{ item.qty }}</span>
+                </div>
+                <p>{{ item.price * item.qty | currency: 'USD' : true }}</p>
+              </div>
+            }
+          </div>
+
+          <div class="summary-total">
+            <div>
+              <span>Subtotal</span>
+              <strong>{{ subtotal() | currency: 'USD' : true }}</strong>
+            </div>
+            <div>
+              <span>Delivery</span>
+              <strong>{{ deliveryFee() | currency: 'USD' : true }}</strong>
+            </div>
+            <div>
+              <span>Tax</span>
+              <strong>{{ tax() | currency: 'USD' : true }}</strong>
+            </div>
+            <div class="grand-total">
+              <span>Total</span>
+              <strong>{{ total() | currency: 'USD' : true }}</strong>
+            </div>
+          </div>
+
+          <button matButton="filled">Place Order</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+}

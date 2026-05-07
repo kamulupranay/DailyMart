@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Login implements OnInit {
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
   isLoading = signal(false);
   showPassword = signal(false);
   errorMessage = signal<string | null>(null);
@@ -22,16 +22,20 @@ export class Login implements OnInit {
   private authService = inject(AuthService);
 
   constructor(private fb: FormBuilder) {
+    
+  }
+
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
-  }
 
-  ngOnInit(): void {
-    if (this.authService.getCurrentUser()) {
-      this.router.navigate(['/home']);
-    }
+    this.authService.checkSession().subscribe((response) => {
+      if (response.user) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   togglePasswordVisibility(): void {

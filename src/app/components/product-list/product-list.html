@@ -16,16 +16,20 @@
             <p class="category">{{ product.category }}</p>
             <p class="price">{{ product.price | currency: 'USD': true}}</p>
 
-    @if (getQtys(product) === 0) {
-      <button matButton="outlined" (click)="addToCart(product)">Add to Cart</button>
-    } @else {
-      <button matButton="outlined" (click)="decrease(product)">-</button>
-      <span class="product-count">{{ getQtys(product) }}</span>
-      <button matButton="outlined" (click)="increase(product)">+</button>
-    }
+            @if (getQtys(product) === 0) {
+              <button class="add-cart-btn" matButton="filled" (click)="addToCart(product)">
+                Add to Cart
+              </button>
+            } @else {
+              <div class="qty-container">
+                <button matButton="outlined" (click)="decrease(product)">-</button>
+                <span class="product-count">{{ getQtys(product) }}</span>
+                <button matButton="outlined" (click)="increase(product)">+</button>
+              </div>
+            }
 
-  </mat-card-content>
-  </mat-card>
-}
+        </mat-card-content>
+      </mat-card>
+    }
 </div>
 }
