@@ -1,4 +1,4 @@
-import { Component, signal, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, OnInit, inject } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { HeaderComponent } from "./layout/header/header.component";
@@ -7,7 +7,8 @@ import { HeaderComponent } from "./layout/header/header.component";
   selector: 'app-root',
   imports: [HeaderComponent, RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
   protected readonly title = signal('ecommerce');

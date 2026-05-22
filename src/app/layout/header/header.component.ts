@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { Router, RouterLinkWithHref, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { Cart } from '../../services/cart';
 import { AuthService } from '../../services/auth.service';
@@ -27,10 +27,11 @@ import { AuthService } from '../../services/auth.service';
     MatIconModule,
     MatBadgeModule,
     MatMenuModule,
-    RouterLinkWithHref,
+    RouterLink,
     RouterLinkActive,
     TitleCasePipe
 ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   isMenuOpen = signal(false);
@@ -40,8 +41,14 @@ export class HeaderComponent {
   private router = inject(Router);
   private eRef = inject(ElementRef);
   cartCount = this.cartService.cartCount;
+  cartBadge = computed(() => {
+    const count = this.cartCount();
+    return count > 99 ? '99+' : String(count);
+  });
+  hasCartItems = computed(() => this.cartCount() > 0);
   isAuthenticated = this.authService.isAuthenticated;
   currentUser = this.authService.currentUser;
+  canShop = computed(() => this.authService.hasAnyRole(['customer']));
   private breakpointObserver = inject(BreakpointObserver);
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map((result) => result.matches),
@@ -80,7 +87,4 @@ export class HeaderComponent {
     });
   }
 
-  canShop() {
-    return this.authService.hasAnyRole(['customer']);
-  }
 }

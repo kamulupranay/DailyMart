@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Product {
@@ -16,10 +16,13 @@ export interface Product {
 }
 
 export interface CartItem {
-  product: Product;
+  product?: Product;
+  productId?: string;
+  name?: string;
+  imageUrl?: string;
   quantity: number;
   price: number;
-  _id: string;
+  _id?: string;
 }
 
 export interface Cart {
@@ -32,20 +35,54 @@ export interface Cart {
 }
 
 export interface Order {
-  _id: string;
-  user: string;
+  _id?: string;
+  id?: string;
+  user?: string;
+  userId?: string;
   items: CartItem[];
   totalAmount: number;
   status: string;
-  shippingAddress: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
+  payment?: {
+    provider?: string;
+    paymentId?: string;
+    orderId?: string;
+  };
+  shippingAddress?: {
+    name?: string;
+    phone?: string;
+    street?: string;
+    addressLine1?: string;
+    addressLine2?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    postalCode?: string;
+    country?: string;
   };
   createdAt: string;
   updatedAt: string;
+}
+
+export interface CreateOrderPayload {
+  items: Array<{
+    productId: string;
+    name: string;
+    imageUrl: string;
+    quantity: number;
+    price: number;
+  }>;
+  totalAmount: number;
+  status?: string;
+  payment?: {
+    provider: string;
+    paymentId: string;
+    orderId: string;
+  };
+  shippingAddress?: Order['shippingAddress'];
+}
+
+interface OrdersResponse {
+  orders: Order[];
 }
 
 @Injectable({
@@ -128,17 +165,19 @@ export class OrderService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl;
 
-  createOrder(shippingAddress: any): Observable<Order> {
+  createOrder(order: CreateOrderPayload): Observable<Order> {
     return this.http.post<Order>(
       `${this.apiUrl}/orders`,
-      { shippingAddress },
+      order,
       { withCredentials: true }
     );
   }
 
   getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/orders`, {
+    return this.http.get<Order[] | OrdersResponse>(`${this.apiUrl}/orders`, {
       withCredentials: true
-    });
+    }).pipe(
+      map((response) => Array.isArray(response) ? response : response.orders)
+    );
   }
 }

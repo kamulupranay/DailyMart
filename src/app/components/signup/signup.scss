@@ -3,7 +3,8 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  // background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0d3f0a 0%, #0c8c09 100%);
   padding: 20px;
 }
 
@@ -14,14 +15,14 @@
   padding: 40px;
   width: 100%;
   max-width: 400px;
-}
 
-.signup-card h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 28px;
-  font-weight: 600;
+  & h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;
+    font-weight: 600;
+  }
 }
 
 .signup-form {
@@ -34,29 +35,29 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
 
-.form-group label {
-  font-weight: 500;
-  color: #555;
-  font-size: 14px;
-}
+  & label {
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+  }
 
-.form-group input {
-  padding: 12px 16px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-}
+  & input {
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
 
-.form-group input:focus {
-  outline: none;
-  border-color: #667eea;
-}
+    &:focus {
+      outline: none;
+      border-color: #667eea;
+    }
 
-.form-group input.error {
-  border-color: #e74c3c;
+    &.error {
+      border-color: #e74c3c;
+    }
+  }
 }
 
 .error-message {
@@ -67,12 +68,14 @@
 
 .password-input {
   position: relative;
+
+  & input {
+    width: 100%;
+    padding-right: 80px;
+  }
 }
 
-.password-input input {
-  width: 100%;
-  padding-right: 80px;
-}
+
 
 @media (max-width: 480px) {
   .signup-container {
@@ -82,11 +85,13 @@
 
   .signup-card {
     padding: 28px 20px;
+
+    & h2 {
+      font-size: 24px;
+    }
   }
 
-  .signup-card h2 {
-    font-size: 24px;
-  }
+
 }
 
 .toggle-password {
@@ -103,7 +108,7 @@
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #46e581 0%, #085325 100%);
   color: white;
   border: none;
   padding: 14px;
@@ -113,16 +118,16 @@
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-top: 10px;
-}
 
-.submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  }
 
-.submit-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 }
 
 .message {
@@ -131,31 +136,33 @@
   border-radius: 6px;
   text-align: center;
   font-weight: 500;
+
+  &.error {
+    background-color: #fee;
+    color: #e74c3c;
+    border: 1px solid #fcc;
+  }
+
+  &.success {
+    background-color: #efe;
+    color: #27ae60;
+    border: 1px solid #cfc;
+  }
 }
 
-.message.error {
-  background-color: #fee;
-  color: #e74c3c;
-  border: 1px solid #fcc;
-}
 
-.message.success {
-  background-color: #efe;
-  color: #27ae60;
-  border: 1px solid #cfc;
-}
 
 .links {
   text-align: center;
   margin-top: 20px;
-}
 
-.links a {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
-}
+  & a {
+    color: #10b25f;
+    text-decoration: none;
+    font-weight: 500;
 
-.links a:hover {
-  text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

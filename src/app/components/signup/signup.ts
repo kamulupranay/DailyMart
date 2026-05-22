@@ -33,7 +33,6 @@ export class Signup implements OnInit {
 
   ngOnInit(): void {
     this.authService.checkSession().subscribe((response) => {
-      console.log('Session check response:', response);
       if (response.user) {
         this.router.navigate(['/home']);
       }
@@ -53,7 +52,6 @@ export class Signup implements OnInit {
 
   onSubmit(): void {
     if (this.signupForm.invalid) {
-      console.log(this.signupForm.invalid);
       this.errorMessage.set('Please fill in all fields correctly');
       return;
     }

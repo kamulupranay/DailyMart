@@ -1,0 +1,197 @@
+@if (cartItems().length === 0) {
+  <section class="payment-empty">
+    <mat-icon>shopping_cart</mat-icon>
+    <h2>Your cart is empty</h2>
+    <p>Add items before choosing a payment method.</p>
+    <button matButton="filled" routerLink="/shopping">Continue Shopping</button>
+  </section>
+} @else {
+  <section class="payment-page">
+    <div class="payment-header">
+      <div>
+        <p>Payment</p>
+        <h1>Choose how to pay</h1>
+      </div>
+      <button matButton="outlined" routerLink="/checkout">Back to checkout</button>
+    </div>
+
+    <div class="payment-layout">
+      <div class="payment-methods" aria-label="Payment methods">
+        @for (option of paymentOptions; track option.id) {
+          <button
+            type="button"
+            class="method-tile"
+            [class.active]="selectedMethod() === option.id"
+            (click)="selectMethod(option.id)"
+          >
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>
+              <strong>{{ option.title }}</strong>
+              <small>{{ option.subtitle }}</small>
+            </span>
+          </button>
+        }
+      </div>
+
+      <mat-card appearance="outlined" class="payment-card">
+        <mat-card-header>
+          <mat-card-title>
+            @switch (selectedMethod()) {
+              @case ('card') {
+                Debit card details
+              }
+              @case ('credit-card') {
+                Credit card details
+              }
+              @case ('upi') {
+                UPI payment
+              }
+              @case ('net-banking') {
+                Net banking
+              }
+              @case ('wallet') {
+                Wallet payment
+              }
+              @case ('cash') {
+                Cash on delivery
+              }
+            }
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @switch (selectedMethod()) {
+            @case ('card') {
+              <div class="form-grid">
+                <label class="full-width">
+                  Card number
+                  <input inputmode="numeric" placeholder="1234 5678 9012 3456" />
+                </label>
+                <label>
+                  Expiry
+                  <input inputmode="numeric" placeholder="MM / YY" />
+                </label>
+                <label>
+                  CVV
+                  <input inputmode="numeric" placeholder="123" />
+                </label>
+                <label class="full-width">
+                  Name on card
+                  <input placeholder="Enter card holder name" />
+                </label>
+              </div>
+            }
+            @case ('credit-card') {
+              <div class="form-grid">
+                <label class="full-width">
+                  Credit card number
+                  <input inputmode="numeric" placeholder="1234 5678 9012 3456" />
+                </label>
+                <label>
+                  Expiry
+                  <input inputmode="numeric" placeholder="MM / YY" />
+                </label>
+                <label>
+                  CVV
+                  <input inputmode="numeric" placeholder="123" />
+                </label>
+                <label class="full-width">
+                  EMI option
+                  <select>
+                    <option>No EMI, pay full amount</option>
+                    <option>3 months EMI</option>
+                    <option>6 months EMI</option>
+                    <option>12 months EMI</option>
+                  </select>
+                </label>
+              </div>
+            }
+            @case ('upi') {
+              <div class="form-grid">
+                <label class="full-width">
+                  UPI ID
+                  <input placeholder="name@bank" />
+                </label>
+                <div class="qr-panel full-width">
+                  <mat-icon>qr_code_2</mat-icon>
+                  <span>Scan QR from any UPI app to pay {{ total() | currency: displayCurrency : true }}</span>
+                </div>
+              </div>
+            }
+            @case ('net-banking') {
+              <div class="form-grid">
+                <label class="full-width">
+                  Select bank
+                  <select>
+                    <option>State Bank of India</option>
+                    <option>HDFC Bank</option>
+                    <option>ICICI Bank</option>
+                    <option>Axis Bank</option>
+                    <option>Kotak Mahindra Bank</option>
+                    <option>Other bank</option>
+                  </select>
+                </label>
+              </div>
+            }
+            @case ('wallet') {
+              <div class="wallet-grid">
+                <button type="button">Amazon Pay</button>
+                <button type="button">Paytm</button>
+                <button type="button">Mobikwik</button>
+                <button type="button">PhonePe Wallet</button>
+              </div>
+            }
+            @case ('cash') {
+              <div class="cash-panel">
+                <mat-icon>local_shipping</mat-icon>
+                <div>
+                  <strong>Pay on delivery</strong>
+                  <p>Keep {{ total() | currency: displayCurrency : true }} ready when your order arrives.</p>
+                </div>
+              </div>
+            }
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined" class="summary-card">
+        <mat-card-header>
+          <mat-card-title>Payment summary</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="summary-total">
+            <div>
+              <span>Subtotal</span>
+              <strong>{{ subtotal() | currency: displayCurrency : true }}</strong>
+            </div>
+            <div>
+              <span>Delivery</span>
+              <strong>{{ deliveryFee() | currency: displayCurrency : true }}</strong>
+            </div>
+            <div>
+              <span>Tax</span>
+              <strong>{{ tax() | currency: displayCurrency : true }}</strong>
+            </div>
+            <div class="grand-total">
+              <span>Total</span>
+              <strong>{{ total() | currency: displayCurrency : true }}</strong>
+            </div>
+          </div>
+
+          <button matButton="filled" [disabled]="isProcessing()" (click)="payNow()">
+            @if (isProcessing()) {
+              Processing...
+            } @else {
+              Pay {{ total() | currency: displayCurrency : true }}
+            }
+          </button>
+          @if (paymentMessage()) {
+            <p class="payment-status success">{{ paymentMessage() }}</p>
+          }
+          @if (paymentError()) {
+            <p class="payment-status error">{{ paymentError() }}</p>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+}

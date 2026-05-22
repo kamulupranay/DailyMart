@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, of, tap, throwError } from 'rxjs';
+import { catchError, Observable, of, shareReplay, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export type UserRole = 'admin' | 'customer';
@@ -24,6 +24,7 @@ export interface User {
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl;
+  private sessionRequest$?: Observable<{ user: User | null }>;
   readonly isAuthenticated = signal(false);
   readonly currentUser = signal<User | null>(null);
 
@@ -47,6 +48,7 @@ export class AuthService {
         tap((response) => {
           this.currentUser.set(response.user);
           this.isAuthenticated.set(true);
+          this.sessionRequest$ = of({ user: response.user }).pipe(shareReplay(1));
         }),
         catchError((error) => this.handleError(error))
       );
@@ -61,6 +63,7 @@ export class AuthService {
       tap((response) => {
         this.currentUser.set(response.user);
         this.isAuthenticated.set(true);
+        this.sessionRequest$ = of({ user: response.user }).pipe(shareReplay(1));
       }),
       catchError((error) => this.handleError(error))
     );
@@ -75,12 +78,13 @@ export class AuthService {
       tap(() => {
         this.isAuthenticated.set(false);
         this.currentUser.set(null);
+        this.sessionRequest$ = undefined;
       })
     );
   }
 
   checkSession() {
-    return this.http.get<{ user: User }>(
+    this.sessionRequest$ ??= this.http.get<{ user: User | null }>(
       `${this.apiUrl}/profile`,
       { withCredentials: true }
     ).pipe(
@@ -88,14 +92,20 @@ export class AuthService {
         if (response.user) {
           this.currentUser.set(response.user);
           this.isAuthenticated.set(true);
+        } else {
+          this.currentUser.set(null);
+          this.isAuthenticated.set(false);
         }
       }),
       catchError(() => {
         this.isAuthenticated.set(false);
         this.currentUser.set(null);
-        return of({ user: null as any });
-      })
+        return of({ user: null });
+      }),
+      shareReplay({ bufferSize: 1, refCount: false })
     );
+
+    return this.sessionRequest$;
   }
 
   getCurrentUser() {

@@ -1,0 +1,96 @@
+<section class="orders-page">
+  <div class="orders-header">
+    <div>
+      <p class="eyebrow">Purchased orders</p>
+      <h2>My orders</h2>
+    </div>
+    <button matButton="outlined" routerLink="/shopping">
+      <mat-icon>add_shopping_cart</mat-icon>
+      Shop more
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="orders-list" aria-label="Loading orders">
+      @for (_ of skeletonOrders; track $index) {
+        <mat-card class="order-card skeleton-order" appearance="outlined">
+          <div class="skeleton skeleton-order-title"></div>
+          <div class="skeleton skeleton-order-meta"></div>
+          <div class="skeleton skeleton-payment"></div>
+          <div class="skeleton skeleton-order-item"></div>
+          <div class="skeleton skeleton-order-item short"></div>
+        </mat-card>
+      }
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-panel">
+      <mat-icon>error_outline</mat-icon>
+      <h2>Orders could not be loaded</h2>
+      <p>{{ errorMessage() }}</p>
+      <button matButton="filled" (click)="loadOrders()">Try again</button>
+    </div>
+  } @else if (orders().length === 0) {
+    <div class="state-panel">
+      <mat-icon>receipt_long</mat-icon>
+      <h2>No purchased orders yet</h2>
+      <p>Your completed purchases will appear here.</p>
+      <button matButton="filled" routerLink="/shopping">Start shopping</button>
+    </div>
+  } @else {
+    <div class="orders-list">
+      @for (order of orders(); track trackOrder($index, order)) {
+        <mat-card class="order-card" appearance="outlined">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>receipt_long</mat-icon>
+            <mat-card-title>Order #{{ shortOrderId(order) }}</mat-card-title>
+            <mat-card-subtitle>{{ order.createdAt | date: 'mediumDate' }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="order-meta">
+              <span class="status">{{ order.status | titlecase }}</span>
+              <strong>{{ order.totalAmount | currency: displayCurrency : true }}</strong>
+            </div>
+
+            <!-- @if (paymentId(order)) {
+              <div class="payment-meta">
+                <mat-icon>payments</mat-icon>
+                <div>
+                  <span>{{ paymentProvider(order) | titlecase }} Payment ID</span>
+                  <strong>{{ paymentId(order) }}</strong>
+                </div>
+              </div>
+            } -->
+
+            <div class="items-list">
+              @for (item of order.items; track trackItem($index, item)) {
+                <div class="order-item">
+                  @if (itemImage(item)) {
+                    <img [src]="itemImage(item)" [alt]="itemName(item)" />
+                  } @else {
+                    <span class="image-fallback">
+                      <mat-icon>inventory_2</mat-icon>
+                    </span>
+                  }
+                  <div>
+                    <h3>{{ itemName(item) }}</h3>
+                    <p>
+                      Qty {{ item.quantity }} x {{ item.price | currency: displayCurrency : true }}
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
+
+            @if (address(order)) {
+              <div class="shipping-address">
+                <mat-icon>local_shipping</mat-icon>
+                <span>{{ address(order) }}</span>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</section>

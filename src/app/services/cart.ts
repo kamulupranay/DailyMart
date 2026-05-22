@@ -8,6 +8,7 @@ export type CartItem = BaseItem & { qty: number };
 })
 export class Cart {
   private cart = signal<CartItem[]>([]);
+  private qtyById = computed(() => new Map(this.cart().map(item => [item.id, item.qty])));
 
   getCart(){
     return this.cart;
@@ -19,8 +20,9 @@ export class Cart {
     const existing = items.find(p => p.id === product.id);
 
     if (existing) {
-      existing.qty++;
-      this.cart.set([...items]);
+      this.cart.set(items.map(item =>
+        item.id === product.id ? { ...item, qty: item.qty + 1 } : item
+      ));
     } else {
       this.cart.set([...items, { ...product, qty: 1 }]);
     }
@@ -29,28 +31,18 @@ export class Cart {
   // ➕ Increase
   increase(product: BaseItem) {
     const items = this.cart();
-    const item = items.find(p => p.id === product.id);
-
-    if (item) {
-      item.qty++;
-      this.cart.set([...items]);
-    }
+    this.cart.set(items.map(item =>
+      item.id === product.id ? { ...item, qty: item.qty + 1 } : item
+    ));
   }
 
   // ➖ Decrease
   decrease(product: BaseItem) {
-    const items = this.cart();
-    const index = items.findIndex(p => p.id === product.id);
-
-    if (index > -1) {
-      items[index].qty--;
-
-      if (items[index].qty === 0) {
-        items.splice(index, 1);
-      }
-
-      this.cart.set([...items]);
-    }
+    this.cart.set(
+      this.cart()
+        .map(item => item.id === product.id ? { ...item, qty: item.qty - 1 } : item)
+        .filter(item => item.qty > 0)
+    );
   }
 
   // 🔍 Get Qty
@@ -58,11 +50,12 @@ export class Cart {
     this.cart.set(this.cart().filter(item => item.id !== id));
   }
 
+  clear() {
+    this.cart.set([]);
+  }
+
   getQty(product: BaseItem) {
-    const item = this.cart().find(p => p.id === product.id);
-    
-    const check = item ? item.qty : 0;
-    return check
+    return this.qtyById().get(product.id) ?? 0;
   }
 
   // 🛒 Badge count

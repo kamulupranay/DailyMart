@@ -1,17 +1,17 @@
 <mat-toolbar color="primary" class="header-toolbar">
-  <div class="brand-section">
+  <button class="brand-section" routerLink="/home" aria-label="Go to Daily Mart home">
     <span class="brand-icon">
       <mat-icon>shopping_bag</mat-icon>
     </span>
     <span class="brand-text">Daily Mart</span>
-  </div>
+  </button>
 
   <nav class="desktop-menu">
     <button
       routerLink="home"
       routerLinkActive="active"
       matButton
-      class="navlist"
+      class="navlist nav-home"
       aria-label="Go to Home"
     >
       Home
@@ -21,7 +21,7 @@
         routerLink="shopping"
         routerLinkActive="active"
         matButton
-        class="navlist"
+        class="navlist nav-shopping"
         aria-label="Go to Shopping"
       >
         Shopping
@@ -30,7 +30,7 @@
         routerLink="groceries"
         routerLinkActive="active"
         matButton
-        class="navlist"
+        class="navlist nav-groceries"
         aria-label="Go to Groceries"
       >
         Groceries
@@ -49,12 +49,13 @@
       <button
         class="icon-button"
         mat-icon-button
-        [matBadge]="cartCount()"
-        [matBadgeHidden]="cartCount() === 0"
+        [matBadge]="cartBadge()"
+        [matBadgeHidden]="!hasCartItems()"
         matBadgeColor="warn"
+        matBadgeSize="small"
         routerLink="/cart"
         (click)="isMenuOpen.set(false)"
-        aria-label="View cart"
+        [attr.aria-label]="'View cart, ' + cartCount() + ' items'"
       >
         <mat-icon>shopping_cart</mat-icon>
       </button>
@@ -76,7 +77,7 @@
           <mat-icon>person</mat-icon>
           <span>{{ currentUser()?.role | titlecase }} profile</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item routerLink="/orders" (click)="isMenuOpen.set(false)">
           <mat-icon>receipt_long</mat-icon>
           <span>Orders</span>
         </button>
@@ -109,10 +110,12 @@
     [class.slide-up]="isClosing()"
     (click)="isMenuOpen.set(false)"
   >
-    <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/home" class="mobile-nav-home">Home</button>
     @if (canShop()) {
-      <button mat-button routerLink="/shopping">Shopping</button>
-      <button mat-button routerLink="/groceries">Groceries</button>
+      <button mat-button routerLink="/shopping" class="mobile-nav-shopping">Shopping</button>
+      <button mat-button routerLink="/groceries" class="mobile-nav-groceries">Groceries</button>
+      <button mat-button routerLink="/cart">Cart ({{ cartCount() }})</button>
+      <button mat-button routerLink="/orders">Orders</button>
     }
   </div>
 }

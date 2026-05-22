@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Cart } from '../../services/cart';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +16,7 @@ import { BaseItem } from '../../models/base.model';
 ],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent {
   private cartService = inject(Cart);

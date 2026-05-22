@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Product } from '../../services/product';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ProductModel } from '../../models/product.model';
@@ -20,11 +20,13 @@ import { CurrencyPipe } from '@angular/common';
 ],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductList {
   private snackBar = inject(MatSnackBar);
   private productService = inject(Product);
   private cartService = inject(Cart);
+  readonly skeletonCards = Array.from({ length: 8 });
 
   //Signal (correct way)
   productList = toSignal<ProductModel[] | undefined>(

@@ -4,8 +4,8 @@
   "description": "Backend API for E-commerce application",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only index.ts",
+    "start": "node server.js",
+    "dev": "node server.js",
     "build": "tsc",
     "watch": "tsc --watch",
     "seed": "ts-node scripts/seed.ts"

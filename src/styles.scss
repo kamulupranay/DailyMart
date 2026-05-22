@@ -5,6 +5,10 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+$app-font: "Plus Jakarta Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
 html {
   height: 100%;
   @include mat.theme(
@@ -13,10 +17,14 @@ html {
         primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
-      typography: Roboto,
+      typography: $app-font,
       density: 0,
     )
   );
+  font-family: $app-font;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 *,
@@ -30,7 +38,7 @@ body {
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
   // user's system settings.
   color-scheme: light;
-  font-family: sans-serif !important;
+  font-family: $app-font;
 
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
@@ -44,39 +52,88 @@ body {
   height: 100%;
 }
 
+button,
+input,
+select,
+textarea,
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-card,
+.mat-mdc-menu-item,
+.mat-mdc-snack-bar-label {
+  font-family: $app-font !important;
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.mat-mdc-card-title {
+  font-family: $app-font;
+  letter-spacing: 0;
+  font-weight: 850;
+}
+
+p,
+span,
+a,
+label,
+small,
+strong,
+li {
+  letter-spacing: 0;
+}
+
 html,
 body {
   max-width: 100%;
   overflow-x: hidden;
 }
 /* You can add global styles to this file, and also import other style files */
-button:hover {
-    background-color: #2e7d32;
-    color: #fff !important;
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e8edf3;
 }
-.loading{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 80vh;
+
+.skeleton::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.62), transparent);
+  animation: skeletonShimmer 1.25s ease-in-out infinite;
 }
-.loader {
-  width: 45px;
-  aspect-ratio: .75;
-  --c: no-repeat linear-gradient(#eedf0ada 0 0);
-  background: 
-    var(--c) 0%   50%,
-    var(--c) 50%  50%,
-    var(--c) 100% 50%;
-  animation: l7 1s infinite linear alternate;
+
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
-@keyframes l7 {
-  0%  {background-size: 20% 50% ,20% 50% ,20% 50% }
-  20% {background-size: 20% 20% ,20% 50% ,20% 50% }
-  40% {background-size: 20% 100%,20% 20% ,20% 50% }
-  60% {background-size: 20% 50% ,20% 100%,20% 20% }
-  80% {background-size: 20% 50% ,20% 50% ,20% 100%}
-  100%{background-size: 20% 50% ,20% 50% ,20% 50% }
+
+.empty-state {
+  min-height: 55vh;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 32px;
+  color: #667085;
+  text-align: center;
+}
+
+.empty-state h2 {
+  margin: 0;
+  color: #172033;
+}
+
+.empty-state p {
+  margin: 0;
 }
 
 .success-snackbar {

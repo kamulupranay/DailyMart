@@ -1,7 +1,19 @@
-<!-- Add Content Here -->
-@if ((productList()?.length ?? 0) === 0) {
-  <div class="loading">
-  <div class="loader"></div>
+@if (productList() === undefined) {
+  <div class="product-grid" aria-label="Loading products">
+    @for (_ of skeletonCards; track $index) {
+      <mat-card class="product-card skeleton-card" appearance="outlined">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-image"></div>
+        <div class="skeleton skeleton-pill"></div>
+        <div class="skeleton skeleton-price"></div>
+        <div class="skeleton skeleton-button"></div>
+      </mat-card>
+    }
+  </div>
+} @else if (productList()?.length === 0) {
+  <div class="empty-state">
+    <h2>No products available</h2>
+    <p>Please check back soon.</p>
   </div>
 }@else {
 <div class="product-grid">
@@ -22,9 +34,9 @@
               </button>
             } @else {
               <div class="qty-container">
-                <button matButton="outlined" (click)="decrease(product)">-</button>
+                <button class="qty-btn" matButton="outlined" (click)="decrease(product)">-</button>
                 <span class="product-count">{{ getQtys(product) }}</span>
-                <button matButton="outlined" (click)="increase(product)">+</button>
+                <button class="qty-btn" matButton="outlined" (click)="increase(product)">+</button>
               </div>
             }
 

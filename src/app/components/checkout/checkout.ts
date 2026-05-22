@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +11,7 @@ import { Cart } from '../../services/cart';
   imports: [CurrencyPipe, RouterLink, MatButtonModule, MatCardModule, MatIconModule],
   templateUrl: './checkout.html',
   styleUrl: './checkout.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Checkout {
   private cartService = inject(Cart);

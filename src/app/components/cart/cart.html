@@ -170,9 +170,9 @@
               </p>
 
               <div class="qty-controls" aria-label="Quantity controls">
-                <button matButton="outlined" (click)="decreaseQty(item)">-</button>
+                <button class="qty-btn" matButton="outlined" (click)="decreaseQty(item)">-</button>
                 <span class="qty-count">{{ getQtys(item) }}</span>
-                <button matButton="outlined" (click)="increaseQty(item)">+</button>
+                <button class="qty-btn" matButton="outlined" (click)="increaseQty(item)">+</button>
               </div>
 
               <button matButton="outlined" class="remove-btn" (click)="removeItem(item.id)">
