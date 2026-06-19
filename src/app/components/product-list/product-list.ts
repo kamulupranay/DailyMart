@@ -2,12 +2,14 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Product } from '../../services/product';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ProductModel } from '../../models/product.model';
+import { map } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { Cart } from '../../services/cart';
 import {MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CurrencyPipe } from '@angular/common';
+import { CustomSnackbarComponent } from '../custom-snackbar/custom-snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product-list',
@@ -15,7 +17,6 @@ import { CurrencyPipe } from '@angular/common';
     MatCardModule,
     MatButtonModule,
     MatListModule,
-    MatSnackBarModule,
     CurrencyPipe
 ],
   templateUrl: './product-list.html',
@@ -29,9 +30,20 @@ export class ProductList {
   readonly skeletonCards = Array.from({ length: 8 });
 
   //Signal (correct way)
-  productList = toSignal<ProductModel[] | undefined>(
-   this.productService.getProduct(),
-    { initialValue: undefined }
+  readonly productList = toSignal<ProductModel[] | undefined>(
+    this.productService.getProduct().pipe(
+      map((products: ProductModel[]) =>
+        products.map(product => ({
+          id: product.id,
+          title: product.title,
+          image: product.image,
+          category: product.category,
+          description: product.description,
+          price: product.price,
+        } as ProductModel))
+      )
+    ),
+    { initialValue: null }
   );
 
   // 🔍 Get Qty (connect to cart service)
@@ -42,11 +54,15 @@ export class ProductList {
   // ➕ Add
   addToCart(product: ProductModel) {
     this.cartService.addToCart(product);
-    this.snackBar.open('Item added successfully', 'Close', {
+    this.snackBar.openFromComponent(CustomSnackbarComponent, {
       duration: 3000,
-      horizontalPosition: 'right',
+      panelClass: ['custom-success-snackbar'],
+      horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: ['success-snackbar'],
+      data: {
+        message: `Item added successfully to cart!`,
+        action: '<mat-icon>close</mat-icon>',
+      },
     });
   }
 

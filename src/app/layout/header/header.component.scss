@@ -2,9 +2,8 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  padding: 0 1.5rem;
+  padding: 0.5rem;
   height: auto;
-  min-height: 70px;
   background: linear-gradient(135deg, #0b791f 0%, #146633 100%);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -133,7 +132,7 @@
 }
 
 .username {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .mat-badge-content {
@@ -157,7 +156,7 @@
 /* Mobile styles */
 @media (max-width: 767px) {
   .header-toolbar {
-    padding: 0 1rem;
+    padding: 0 .5rem;
     min-height: 60px;
     gap: 0.5rem;
   }
@@ -179,9 +178,9 @@
     height: 40px;
   }
 
-  .spacer {
-    flex: 1;
-  }
+  // .spacer {
+  //   flex: 1;
+  // }
 
   .mobile-dropdown {
     display: flex;
@@ -222,9 +221,13 @@
     }
   }
 
-  .username {
-    display: none;
-  }
+    .username {
+      display: block;
+      white-space: normal;
+      width: 84px;
+      font-size: .8rem;
+      line-height: 1.5;
+    }
 
   .slide-down {
     animation: slideDown 0.3s ease forwards;
@@ -260,6 +263,10 @@
 
 // Tablet
 @media (min-width: 768px) {
+  .navlist {
+    padding: 0 .8rem;
+    font-size: 0.8rem;
+  }
   .mobile-menu {
     display: none;
   }

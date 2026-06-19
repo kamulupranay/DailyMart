@@ -2,22 +2,9 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, of, shareReplay, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthResponse, User } from '../models/user.model';
 
 export type UserRole = 'admin' | 'customer';
-
-export interface AuthResponse {
-  message: string;
-  user: User;
-}
-
-export interface User {
-  id: string;
-  username: string;
-  name: string;
-  email: string;
-  role: UserRole;
-}
-
 @Injectable({
   providedIn: 'root',
 })

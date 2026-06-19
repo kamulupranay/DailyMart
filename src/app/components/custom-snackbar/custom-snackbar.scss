@@ -1,0 +1,80 @@
+/* Custom snackbar styling using Material's snackbar classes */
+::ng-deep .custom-success-snackbar {
+  .mdc-snackbar__surface {
+    background:rgba(0, 0, 0, 0.75);
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+  }
+
+  .mdc-snackbar__label {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &::before {
+      content: '✓';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      font-size: 18px;
+      font-weight: 700;
+      animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards;
+    }
+  }
+
+  .mdc-button {
+    color: #fff4b8;
+    font-weight: 700;
+  }
+}
+
+.mat-icon {
+  color: #fff;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.snackbar-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 300px;
+}
+
+.success-icon {
+  color: #a3e440;
+}
+
+.message {
+  flex: 1;
+  font-size: 14px;
+}

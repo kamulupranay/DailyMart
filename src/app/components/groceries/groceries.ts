@@ -7,6 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { map } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { CurrencyPipe } from '@angular/common';
+import { CustomSnackbarComponent } from '../custom-snackbar/custom-snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -23,28 +25,38 @@ import { CurrencyPipe } from '@angular/common';
 export class Groceries {
   private productService = inject(Product);
   private cartService = inject(Cart);
+   private snackBar = inject(MatSnackBar);
   readonly skeletonCards = Array.from({ length: 8 });
 
   //Signal (correct way)
   
-readonly groceries: Signal<GroceriesModel[] | undefined> = toSignal(
-  this.productService.getGroceries().pipe(
-    map((res: any) => res.products.map((item: any)=> {
-      if (!item) return null; 
-      return new GroceriesModel(
-          item.id,
-          item.title,
-          item.images?.[0],
-          item.discount,
-          item.price,
-          item.category,
-          item.description
-        )
-    }).filter((g: any) => g && g.id))
-  ),
-  { initialValue: undefined }
-);
+readonly groceries: Signal<GroceriesModel[] | null> = toSignal(
+    this.productService.getGroceries().pipe(
+      map((res: { products: GroceriesModel[] }) => res.products
+        .map((item: GroceriesModel) => {
+          if (!item) {
+            return null;
+          }
 
+          const grocery: GroceriesModel = {
+            id: item.id,
+            title: item.title,
+            image: item.images?.[0] ?? item.images?.[0] ?? '', // Provide a default image if item.image is null
+            category: item.category,
+            description: item.description,
+            price: item.price,
+            images: []
+          };
+          console.log('Grocery:', grocery);
+
+          return grocery;
+        })
+        .filter((g: GroceriesModel | null): g is GroceriesModel => !!g?.id)
+      )
+    ),
+    { initialValue: null }
+  );
+ 
   // 🔍 Get Qty (connect to cart service)
   getQtys(product: GroceriesModel) {
     return this.cartService.getQty(product);
@@ -53,6 +65,14 @@ readonly groceries: Signal<GroceriesModel[] | undefined> = toSignal(
   // ➕ Add
   addToCart(product: GroceriesModel) {
     this.cartService.addToCart(product);
+    this.snackBar.openFromComponent(CustomSnackbarComponent, {
+          duration: 3000,
+          // panelClass: ['custom-success-snackbar'],
+          data: {
+            message: `${product.title} added to cart!`,
+            action: '<mat-icon>close</mat-icon>',
+          },
+        });
   }
 
   // ➕ Increase
